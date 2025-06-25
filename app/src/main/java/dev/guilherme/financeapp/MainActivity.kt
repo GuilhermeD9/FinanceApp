@@ -1,7 +1,6 @@
 package dev.guilherme.financeapp
 
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
