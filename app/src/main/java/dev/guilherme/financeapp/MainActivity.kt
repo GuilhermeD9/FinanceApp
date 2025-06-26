@@ -5,26 +5,36 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
-    private val transactions = mutableListOf<Transaction>()
+    private lateinit var transactionDao: TransactionDao
     private lateinit var adapter: TransactionAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        transactionDao = AppDatabase.getDatabase(this).transactionDao()
+
         val descriptionEditText: EditText = findViewById(R.id.edit_text_description)
         val valueEditText: EditText = findViewById(R.id.edit_text_value)
         val addButton: Button = findViewById(R.id.button_add)
         val recyclerView: RecyclerView = findViewById(R.id.recycler_view_transactions)
 
-        adapter = TransactionAdapter(transactions)
+        adapter = TransactionAdapter()
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
+
+        lifecycleScope.launch {
+            transactionDao.getAllTransactions().collect {
+                transactionsFromDb -> adapter.submitList(transactionsFromDb)
+            }
+        }
 
         addButton.setOnClickListener{
             val description = descriptionEditText.text.toString()
@@ -34,12 +44,13 @@ class MainActivity : AppCompatActivity() {
                 val value = valueString.toDouble()
                 val transaction = Transaction(description = description, value = value)
 
-                transactions.add(transaction)
-
-                adapter.notifyItemInserted(transactions.size - 1)
+                lifecycleScope.launch {
+                    transactionDao.insert(transaction)
+                }
 
                 descriptionEditText.text.clear()
                 valueEditText.text.clear()
+                Toast.makeText(this, "Transação salva!", Toast.LENGTH_SHORT).show()
             } else {
                 Toast.makeText(this, "Por favor, preencha todos os campos", Toast.LENGTH_SHORT).show()
             }
