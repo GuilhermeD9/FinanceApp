@@ -26,7 +26,12 @@ class MainActivity : AppCompatActivity() {
         val addButton: Button = findViewById(R.id.button_add)
         val recyclerView: RecyclerView = findViewById(R.id.recycler_view_transactions)
 
-        adapter = TransactionAdapter()
+        adapter = TransactionAdapter { transaction ->
+            lifecycleScope.launch {
+                transactionDao.delete(transaction)
+                Toast.makeText(this@MainActivity, "Transação deletada", Toast.LENGTH_SHORT).show()
+            }
+        }
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
 

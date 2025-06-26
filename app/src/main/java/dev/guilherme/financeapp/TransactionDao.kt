@@ -1,6 +1,7 @@
 package dev.guilherme.financeapp
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
@@ -13,4 +14,7 @@ interface TransactionDao {
 
     @Query("SELECT * FROM transactions ORDER BY id DESC")
     fun getAllTransactions(): Flow<List<Transaction>>
+
+    @Delete
+    suspend fun delete(transaction: Transaction)
 }
