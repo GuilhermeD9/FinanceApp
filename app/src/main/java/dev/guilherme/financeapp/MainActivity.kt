@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() {
 
             if (description.isNotEmpty() && valueString.isNotEmpty()) {
                 val value = valueString.toDouble()
-                val transaction = Transaction(description, value)
+                val transaction = Transaction(description = description, value = value)
 
                 transactions.add(transaction)
 
