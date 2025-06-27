@@ -10,10 +10,13 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 
 class TransactionAdapter(
-    private val onDeleteClick: (Transaction) -> Unit ) :
-    ListAdapter<Transaction, TransactionAdapter.TransactionViewHolder>(TransactionDiffCallback()) {
+    private val onItemClick: (Transaction) -> Unit,
+    private val onDeleteClick: (Transaction) -> Unit
+) : ListAdapter<Transaction, TransactionAdapter.TransactionViewHolder>(TransactionDiffCallback()) {
 
-    class TransactionViewHolder(itemView: View, private val onDeleteClick: (Transaction) -> Unit
+    class TransactionViewHolder(itemView: View,
+                                private val onItemClick: (Transaction) -> Unit,
+                                private val onDeleteClick: (Transaction) -> Unit
         ) : RecyclerView.ViewHolder(itemView) {
 
         private val descriptionTextView: TextView = itemView.findViewById(R.id.text_view_item_description)
@@ -24,6 +27,10 @@ class TransactionAdapter(
             descriptionTextView.text = transaction.description
             valueTextView.text = "R$ ${"%.2f".format(transaction.value)}"
 
+            itemView.setOnClickListener {
+                onItemClick(transaction)
+            }
+
             deleteButton.setOnClickListener{
                 onDeleteClick(transaction)
             }
@@ -33,7 +40,7 @@ class TransactionAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TransactionViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.transaction_item, parent, false)
-        return TransactionViewHolder(view, onDeleteClick)
+        return TransactionViewHolder(view, onItemClick, onDeleteClick)
     }
 
     override fun onBindViewHolder(holder: TransactionViewHolder, position: Int) {
