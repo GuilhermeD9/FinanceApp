@@ -53,6 +53,15 @@ class EditTransactionDialogFragment : DialogFragment() {
             }
         }
     }
+
+    override fun onStart() {
+        super.onStart()
+        dialog?.window?.setLayout(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+    }
+
     companion object {
         const val TAG = "EditTransactionDialog"
         const val REQUEST_KEY = "edit_transaction_request"
