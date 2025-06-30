@@ -28,8 +28,10 @@ class EditTransactionDialogFragment : DialogFragment() {
         val saveButton = view.findViewById<Button>(R.id.button_dialog_save)
         val cancelButton = view.findViewById<Button>(R.id.button_dialog_cancel)
 
+        val transactionId = requireArguments().getInt(ARG_ID)
         val description = requireArguments().getString(ARG_DESCRIPTION)
         val value = requireArguments().getDouble(ARG_VALUE)
+
         descriptionEditText.setText(description)
         valueEditText.setText(value.toString())
 
@@ -45,6 +47,7 @@ class EditTransactionDialogFragment : DialogFragment() {
                 val newValue = newValueString.toDouble()
 
                 val result = bundleOf(
+                    RESULT_ID to transactionId,
                     RESULT_DESCRIPTION to newDescription,
                     RESULT_VALUE to newValue
                 )
@@ -65,14 +68,17 @@ class EditTransactionDialogFragment : DialogFragment() {
     companion object {
         const val TAG = "EditTransactionDialog"
         const val REQUEST_KEY = "edit_transaction_request"
+        const val RESULT_ID = "result_id"
         const val RESULT_DESCRIPTION = "result_description"
         const val RESULT_VALUE = "result_value"
 
         private const val ARG_DESCRIPTION = "arg_description"
         private const val ARG_VALUE = "arg_value"
+        private const val ARG_ID = "arg_id"
 
-        fun newInstance(description: String, value: Double): EditTransactionDialogFragment {
+        fun newInstance(id: Int, description: String, value: Double): EditTransactionDialogFragment {
             val args = Bundle()
+            args.putInt(ARG_ID, id)
             args.putString(ARG_DESCRIPTION, description)
             args.putDouble(ARG_VALUE, value)
 
