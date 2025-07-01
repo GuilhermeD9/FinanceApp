@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/transactionsListFragment"
-        android:name="dev.guilherme.financeapp.TransactionsListFragment"
+        android:name="dev.guilherme.financeapp.ui.TransactionsListFragment"
         android:label="fragment_transactions_list"
         tools:layout="@layout/fragment_transactions_list" >
         <action
@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/addEditTransactionFragment"
-        android:name="dev.guilherme.financeapp.AddEditTransactionFragment"
+        android:name="dev.guilherme.financeapp.ui.AddEditTransactionFragment"
         android:label="fragment_add_edit_transaction"
         tools:layout="@layout/fragment_add_edit_transaction" >
         <argument

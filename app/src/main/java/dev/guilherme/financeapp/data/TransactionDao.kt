@@ -1,4 +1,4 @@
-package dev.guilherme.financeapp
+package dev.guilherme.financeapp.data
 
 import androidx.room.Dao
 import androidx.room.Delete

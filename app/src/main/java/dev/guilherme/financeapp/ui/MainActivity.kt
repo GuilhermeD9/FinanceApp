@@ -1,7 +1,8 @@
-package dev.guilherme.financeapp
+package dev.guilherme.financeapp.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import dev.guilherme.financeapp.R
 
 class MainActivity : AppCompatActivity() {
 

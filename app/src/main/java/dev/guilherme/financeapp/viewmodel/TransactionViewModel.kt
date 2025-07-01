@@ -1,8 +1,10 @@
-package dev.guilherme.financeapp
+package dev.guilherme.financeapp.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import dev.guilherme.financeapp.data.Transaction
+import dev.guilherme.financeapp.data.TransactionDao
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 

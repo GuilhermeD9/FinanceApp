@@ -1,4 +1,4 @@
-package dev.guilherme.financeapp
+package dev.guilherme.financeapp.ui
 
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +8,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import dev.guilherme.financeapp.R
+import dev.guilherme.financeapp.data.Transaction
 
 class TransactionAdapter(
     private val onItemClick: (Transaction) -> Unit,

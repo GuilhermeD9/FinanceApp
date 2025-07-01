@@ -1,4 +1,4 @@
-package dev.guilherme.financeapp
+package dev.guilherme.financeapp.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,7 +10,11 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import dev.guilherme.financeapp.FinanceApplication
+import dev.guilherme.financeapp.data.Transaction
 import dev.guilherme.financeapp.databinding.FragmentAddEditTransactionBinding
+import dev.guilherme.financeapp.viewmodel.TransactionViewModel
+import dev.guilherme.financeapp.viewmodel.TransactionViewModelFactory
 import kotlinx.coroutines.launch
 
 class AddEditTransactionFragment : Fragment() {

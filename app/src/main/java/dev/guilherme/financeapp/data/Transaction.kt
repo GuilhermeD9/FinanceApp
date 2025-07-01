@@ -1,4 +1,4 @@
-package dev.guilherme.financeapp
+package dev.guilherme.financeapp.data
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

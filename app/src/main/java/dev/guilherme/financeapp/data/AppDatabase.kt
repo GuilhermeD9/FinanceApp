@@ -1,4 +1,4 @@
-package dev.guilherme.financeapp
+package dev.guilherme.financeapp.data
 
 import android.content.Context
 import androidx.room.Database
