@@ -9,5 +9,14 @@
         android:id="@+id/transactionsListFragment"
         android:name="dev.guilherme.financeapp.TransactionsListFragment"
         android:label="fragment_transactions_list"
-        tools:layout="@layout/fragment_transactions_list" />
+        tools:layout="@layout/fragment_transactions_list" >
+        <action
+            android:id="@+id/action_transactionsListFragment_to_addEditTransactionFragment"
+            app:destination="@id/addEditTransactionFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addEditTransactionFragment"
+        android:name="dev.guilherme.financeapp.AddEditTransactionFragment"
+        android:label="fragment_add_edit_transaction"
+        tools:layout="@layout/fragment_add_edit_transaction" />
 </navigation>

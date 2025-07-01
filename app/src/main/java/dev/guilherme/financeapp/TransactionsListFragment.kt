@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import dev.guilherme.financeapp.databinding.FragmentTransactionsListBinding
 import kotlinx.coroutines.launch
@@ -54,8 +55,7 @@ class TransactionsListFragment : Fragment() {
         }
 
         binding.fabAddTransaction.setOnClickListener {
-            // TODO: Navegar para a tela de adicionar
-            Toast.makeText(context, "Adicionar nova transação", Toast.LENGTH_SHORT).show()
+            findNavController().navigate(R.id.action_transactionsListFragment_to_addEditTransactionFragment)
         }
     }
 
