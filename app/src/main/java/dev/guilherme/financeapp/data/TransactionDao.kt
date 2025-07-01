@@ -24,4 +24,10 @@ interface TransactionDao {
 
     @Query("SELECT * FROM transactions WHERE id = :id")
     fun getTransactionById(id: Int): Flow<Transaction?>
+
+    @Query("SELECT SUM(value) FROM transactions WHERE type = 'RECEITA'")
+    fun getTotalReceitas() : Flow<Double?>
+
+    @Query("SELECT SUM(value) FROM transactions WHERE type = 'DESPESA'")
+    fun getTotalDespesas() : Flow<Double?>
 }

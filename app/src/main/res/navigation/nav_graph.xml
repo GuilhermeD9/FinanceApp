@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/transactionsListFragment">
+    app:startDestination="@id/dashboardFragment">
 
     <fragment
         android:id="@+id/transactionsListFragment"
@@ -23,5 +23,14 @@
             android:name="transactionId"
             app:argType="integer"
             android:defaultValue="-1" />
+    </fragment>
+    <fragment
+        android:id="@+id/dashboardFragment"
+        android:name="dev.guilherme.financeapp.ui.DashboardFragment"
+        android:label="fragment_dashboard"
+        tools:layout="@layout/fragment_dashboard" >
+        <action
+            android:id="@+id/action_dashboardFragment_to_transactionsListFragment"
+            app:destination="@id/transactionsListFragment" />
     </fragment>
 </navigation>
