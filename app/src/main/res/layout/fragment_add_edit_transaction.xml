@@ -27,6 +27,48 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edit_text_description" />
 
+    <TextView
+        android:id="@+id/label_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Tipo de Transação:"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edit_text_value" />
+
+    <RadioGroup
+        android:id="@+id/radio_group_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/label_type" >
+
+        <RadioButton
+            android:id="@+id/radio_button_despesa"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Despesa"
+            android:checked="true" />
+
+        <RadioButton
+            android:id="@+id/radio_button_receita"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Receita" />
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/button_date_picker"
+        style="?attr/materialButtonOutlinedStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Selecionar Data"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/radio_group_type" />
+
     <Button
         android:id="@+id/button_save"
         android:layout_width="0dp"
@@ -35,6 +77,6 @@
         android:text="Salvar Transação"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_text_value" />
+        app:layout_constraintTop_toBottomOf="@+id/button_date_picker" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

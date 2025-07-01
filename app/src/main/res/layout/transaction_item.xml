@@ -19,6 +19,16 @@
         tools:text="Almoço com os amigos" />
 
     <TextView
+        android:id="@+id/text_view_item_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="@+id/text_view_item_description"
+        app:layout_constraintTop_toBottomOf="@+id/text_view_item_description"
+        tools:text="28/06/2025" />
+
+    <TextView
         android:id="@+id/text_view_item_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
