@@ -18,5 +18,10 @@
         android:id="@+id/addEditTransactionFragment"
         android:name="dev.guilherme.financeapp.AddEditTransactionFragment"
         android:label="fragment_add_edit_transaction"
-        tools:layout="@layout/fragment_add_edit_transaction" />
+        tools:layout="@layout/fragment_add_edit_transaction" >
+        <argument
+            android:name="transactionId"
+            app:argType="integer"
+            android:defaultValue="-1" />
+    </fragment>
 </navigation>

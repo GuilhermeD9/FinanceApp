@@ -26,7 +26,7 @@ class TransactionsListFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentTransactionsListBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -36,8 +36,9 @@ class TransactionsListFragment : Fragment() {
 
         val adapter = TransactionAdapter(
             onItemClick = { transaction ->
-                // TODO: Navegar para a tela de edição
-                Toast.makeText(context, "Editar: ${transaction.description}", Toast.LENGTH_SHORT).show()
+                val action = TransactionsListFragmentDirections
+                    .actionTransactionsListFragmentToAddEditTransactionFragment(transaction.id)
+                findNavController().navigate(action)
             },
             onDeleteClick = { transaction ->
                 viewModel.delete(transaction)
@@ -55,7 +56,9 @@ class TransactionsListFragment : Fragment() {
         }
 
         binding.fabAddTransaction.setOnClickListener {
-            findNavController().navigate(R.id.action_transactionsListFragment_to_addEditTransactionFragment)
+            val action = TransactionsListFragmentDirections
+                .actionTransactionsListFragmentToAddEditTransactionFragment()
+            findNavController().navigate(action)
         }
     }
 

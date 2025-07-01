@@ -20,6 +20,10 @@ class TransactionViewModel(private val dao: TransactionDao) : ViewModel() {
     fun update(transaction: Transaction) = viewModelScope.launch {
         dao.update(transaction)
     }
+
+    fun getTransactionById(id: Int): Flow<Transaction?> {
+        return dao.getTransactionById(id)
+    }
 }
 
 class TransactionViewModelFactory(private val dao: TransactionDao) : ViewModelProvider.Factory {
