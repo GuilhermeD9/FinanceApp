@@ -25,7 +25,8 @@ import java.util.Locale
 class AddEditTransactionFragment : Fragment() {
 
     private val viewModel: TransactionViewModel by activityViewModels {
-        TransactionViewModelFactory((requireActivity().application as FinanceApplication).database.transactionDao())
+        val database = (requireActivity().application as FinanceApplication).database
+        TransactionViewModelFactory(database.transactionDao(), database.categoryDao())
     }
 
     private val args: AddEditTransactionFragmentArgs by navArgs()

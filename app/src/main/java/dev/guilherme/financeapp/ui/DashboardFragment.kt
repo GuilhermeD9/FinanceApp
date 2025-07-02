@@ -21,7 +21,8 @@ import java.util.Locale
 class DashboardFragment : Fragment() {
 
     private val viewModel: TransactionViewModel by activityViewModels {
-        TransactionViewModelFactory((requireActivity().application as FinanceApplication).database.transactionDao())
+        val database = (requireActivity().application as FinanceApplication).database
+        TransactionViewModelFactory(database.transactionDao(), database.categoryDao())
     }
     private var _binding: FragmentDashboardBinding? = null
     private val binding get() = _binding!!

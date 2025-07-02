@@ -10,5 +10,6 @@ data class Transaction (
     val description: String,
     val value: Double,
     val type: String,
-    val date: Long
+    val date: Long,
+    val categoryId: Int
 )

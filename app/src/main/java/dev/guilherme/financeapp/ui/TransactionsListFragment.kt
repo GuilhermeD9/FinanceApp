@@ -19,7 +19,8 @@ import kotlinx.coroutines.launch
 class TransactionsListFragment : Fragment() {
 
     private val viewModel: TransactionViewModel by activityViewModels {
-        TransactionViewModelFactory((requireActivity().application as FinanceApplication).database.transactionDao())
+        val database = (requireActivity().application as FinanceApplication).database
+        TransactionViewModelFactory(database.transactionDao(), database.categoryDao())
     }
 
     private var _binding: FragmentTransactionsListBinding? = null
