@@ -39,6 +39,23 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:text="R$ 85,00" />
 
+    <TextView
+        android:id="@+id/text_view_item_category"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:background="@drawable/bg_category_chip"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp"
+        android:textColor="@android:color/holo_orange_light"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toBottomOf="@+id/text_view_item_date"
+        app:layout_constraintStart_toEndOf="@+id/text_view_item_date"
+        app:layout_constraintTop_toTopOf="@+id/text_view_item_date"
+        tools:text="Alimentação" />
+
     <ImageButton
         android:id="@+id/button_delete"
         android:layout_width="wrap_content"

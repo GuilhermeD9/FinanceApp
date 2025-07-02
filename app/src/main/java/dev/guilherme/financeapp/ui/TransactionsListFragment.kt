@@ -54,7 +54,7 @@ class TransactionsListFragment : Fragment() {
         binding.recyclerViewTransactions.layoutManager = LinearLayoutManager(context)
 
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.allTransactions.collect { transactions ->
+            viewModel.allTransactionsWithCategory.collect { transactions ->
                 adapter.submitList(transactions)
             }
         }

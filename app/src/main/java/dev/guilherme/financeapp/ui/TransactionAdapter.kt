@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import dev.guilherme.financeapp.R
 import dev.guilherme.financeapp.data.Transaction
+import dev.guilherme.financeapp.data.TransactionWithCategory
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -18,7 +19,7 @@ import java.util.Locale
 class TransactionAdapter(
     private val onItemClick: (Transaction) -> Unit,
     private val onDeleteClick: (Transaction) -> Unit
-) : ListAdapter<Transaction, TransactionAdapter.TransactionViewHolder>(TransactionDiffCallback()) {
+) : ListAdapter<TransactionWithCategory, TransactionAdapter.TransactionViewHolder>(TransactionDiffCallback()) {
 
     class TransactionViewHolder(
         itemView: View,
@@ -30,9 +31,13 @@ class TransactionAdapter(
         private val valueTextView: TextView = itemView.findViewById(R.id.text_view_item_value)
         private val deleteButton: ImageButton = itemView.findViewById(R.id.button_delete)
         private val dateTextView: TextView = itemView.findViewById(R.id.text_view_item_date)
+        private val categoryTextView: TextView = itemView.findViewById(R.id.text_view_item_category)
 
-        fun bind(transaction: Transaction) {
+        fun bind(transactionWithCategory: TransactionWithCategory) {
+            val transaction = transactionWithCategory.transaction
+
             descriptionTextView.text = transaction.description
+            categoryTextView.text = transactionWithCategory.categoryName
 
             val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
             dateTextView.text = dateFormat.format(Date(transaction.date))
@@ -44,13 +49,8 @@ class TransactionAdapter(
                 valueTextView.text = "- R$ ${"%.2f".format(transaction.value)}"
                 valueTextView.setTextColor(ContextCompat.getColor(itemView.context, R.color.red))
             }
-            itemView.setOnClickListener {
-                onItemClick(transaction)
-            }
-
-            deleteButton.setOnClickListener{
-                onDeleteClick(transaction)
-            }
+            itemView.setOnClickListener { onItemClick(transaction) }
+            deleteButton.setOnClickListener{ onDeleteClick(transaction) }
         }
     }
 
@@ -64,12 +64,12 @@ class TransactionAdapter(
         holder.bind(getItem(position))
     }
 
-    class TransactionDiffCallback : DiffUtil.ItemCallback<Transaction>() {
-        override fun areItemsTheSame(oldItem: Transaction, newItem: Transaction): Boolean {
-            return oldItem.id == newItem.id
+    class TransactionDiffCallback : DiffUtil.ItemCallback<TransactionWithCategory>() {
+        override fun areItemsTheSame(oldItem: TransactionWithCategory, newItem: TransactionWithCategory): Boolean {
+            return oldItem.transaction.id == newItem.transaction.id
         }
 
-        override fun areContentsTheSame(oldItem: Transaction, newItem: Transaction): Boolean {
+        override fun areContentsTheSame(oldItem: TransactionWithCategory, newItem: TransactionWithCategory): Boolean {
             return oldItem == newItem
         }
     }

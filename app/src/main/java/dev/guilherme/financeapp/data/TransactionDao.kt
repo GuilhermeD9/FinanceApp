@@ -19,8 +19,13 @@ interface TransactionDao {
     @Update
     suspend fun update(transaction: Transaction)
 
-    @Query("SELECT * FROM transactions ORDER BY id DESC")
-    fun getAllTransactions(): Flow<List<Transaction>>
+    @Query("""
+    SELECT transactions.*,
+            categories.name as categoryName 
+    FROM transactions 
+    INNER JOIN categories ON transactions.categoryId = categories.id 
+    ORDER BY transactions.date DESC""")
+    fun getAllTransactionsWithCategory(): Flow<List<TransactionWithCategory>>
 
     @Query("SELECT * FROM transactions WHERE id = :id")
     fun getTransactionById(id: Int): Flow<Transaction?>

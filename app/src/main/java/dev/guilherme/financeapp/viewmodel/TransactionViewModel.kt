@@ -7,6 +7,7 @@ import dev.guilherme.financeapp.data.Category
 import dev.guilherme.financeapp.data.CategoryDao
 import dev.guilherme.financeapp.data.Transaction
 import dev.guilherme.financeapp.data.TransactionDao
+import dev.guilherme.financeapp.data.TransactionWithCategory
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -25,7 +26,7 @@ class TransactionViewModel(
     private val categoryDao: CategoryDao
 ) : ViewModel() {
 
-    val allTransactions: Flow<List<Transaction>> = transactionDao.getAllTransactions()
+    val allTransactionsWithCategory: Flow<List<TransactionWithCategory>> = transactionDao.getAllTransactionsWithCategory()
     val dashboardState: StateFlow<DashboardState> =
         combine(transactionDao.getTotalReceitas(), transactionDao.getTotalDespesas()) { totalReceitas, totalDespesas ->
             val receitas = totalReceitas ?: 0.0
