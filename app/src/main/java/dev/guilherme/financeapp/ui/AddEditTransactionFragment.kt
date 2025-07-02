@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -13,10 +14,12 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import dev.guilherme.financeapp.FinanceApplication
 import dev.guilherme.financeapp.R
+import dev.guilherme.financeapp.data.Category
 import dev.guilherme.financeapp.data.Transaction
 import dev.guilherme.financeapp.databinding.FragmentAddEditTransactionBinding
 import dev.guilherme.financeapp.viewmodel.TransactionViewModel
 import dev.guilherme.financeapp.viewmodel.TransactionViewModelFactory
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -33,6 +36,7 @@ class AddEditTransactionFragment : Fragment() {
     private var _binding: FragmentAddEditTransactionBinding? = null
     private val binding get() = _binding!!
     private val selectedDate = Calendar.getInstance()
+    private var categories: List<Category> = emptyList()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,22 +50,23 @@ class AddEditTransactionFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (args.transactionId != -1) {
-            viewLifecycleOwner.lifecycleScope.launch {
-                viewModel.getTransactionById(args.transactionId).collect { transaction ->
-                    transaction?.let {
-                        binding.editTextDescription.setText(it.description)
-                        binding.editTextValue.setText(it.value.toString())
-                        if (it.type == "RECEITA") {
-                            binding.radioButtonReceita.isChecked = true
-                        } else {
-                            binding.radioButtonDespesa.isChecked = true
-                        }
-                        selectedDate.timeInMillis = it.date
-                        updateDateButtonText()
-                    }
-                }
+        val categoryAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, mutableListOf<String>())
+        categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.spinnerCategory.adapter = categoryAdapter
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.allCategories.collect { fetchedCategories ->
+                categories = fetchedCategories
+                val categoryNames = categories.map { it.name }
+                categoryAdapter.clear()
+                categoryAdapter.addAll(categoryNames)
+                categoryAdapter.notifyDataSetChanged()
+                checkEditModeAndPreselectCategory()
             }
+        }
+
+        if (args.transactionId != -1) {
+            checkEditModeAndPreselectCategory()
         } else {
             updateDateButtonText()
         }
@@ -73,7 +78,31 @@ class AddEditTransactionFragment : Fragment() {
         binding.buttonSave.setOnClickListener {
             saveTransaction()
         }
+    }
 
+    private fun checkEditModeAndPreselectCategory() {
+        if (args.transactionId != -1) {
+            viewLifecycleOwner.lifecycleScope.launch {
+                viewModel.getTransactionById(args.transactionId).collectLatest { transaction ->
+                    transaction?.let {
+                        binding.editTextDescription.setText(it.description)
+                        binding.editTextValue.setText(it.value.toString())
+                        if (it.type == "RECEITA") {
+                            binding.radioButtonReceita.isChecked = true
+                        } else {
+                            binding.radioButtonDespesa.isChecked = true
+                        }
+                        selectedDate.timeInMillis = it.date
+                        updateDateButtonText()
+                        
+                        val categoryPosition = categories.indexOfFirst { category -> category.id == it.categoryId }
+                        if (categoryPosition != -1) {
+                            binding.spinnerCategory.setSelection(categoryPosition)
+                        }
+                    }
+                }
+            }
+        }
     }
 
     private fun saveTransaction() {
@@ -83,16 +112,22 @@ class AddEditTransactionFragment : Fragment() {
         val type = if (selectedTypeId == R.id.radio_button_receita) "RECEITA" else "DESPESA"
         val date = selectedDate.timeInMillis
 
+        val selectedCategoryPosition = binding.spinnerCategory.selectedItemPosition
+        if (selectedCategoryPosition < 0 || categories.isEmpty()) {
+            Toast.makeText(context, "Por favor, selecione uma categoria", Toast.LENGTH_SHORT).show()
+            return
+        }
+        val categoryId = categories[selectedCategoryPosition].id
+
         if (description.isNotEmpty() && valueString.isNotEmpty()) {
             val value = valueString.toDouble()
+            val transaction = Transaction(args.transactionId.let { if (it == -1) 0 else it }, description, value, type, date, categoryId)
 
             if (args.transactionId != -1) {
-                val updatedTransaction = Transaction(args.transactionId, description, value, type, date)
-                viewModel.update(updatedTransaction)
+                viewModel.update(transaction)
                 Toast.makeText(context, "Transação atualizada!", Toast.LENGTH_SHORT).show()
             } else {
-                val newTransaction = Transaction(description = description, value = value, type = type, date = date)
-                viewModel.insert(newTransaction)
+                viewModel.insert(transaction)
                 Toast.makeText(context, "Transação salva!", Toast.LENGTH_SHORT).show()
             }
             findNavController().popBackStack()
