@@ -18,6 +18,7 @@ import dev.guilherme.financeapp.FinanceApplication
 import dev.guilherme.financeapp.R
 import dev.guilherme.financeapp.data.CategoryTotal
 import dev.guilherme.financeapp.databinding.FragmentDashboardBinding
+import dev.guilherme.financeapp.viewmodel.DateFilter
 import dev.guilherme.financeapp.viewmodel.TransactionViewModel
 import dev.guilherme.financeapp.viewmodel.TransactionViewModelFactory
 import kotlinx.coroutines.flow.collectLatest
@@ -57,12 +58,23 @@ class DashboardFragment : Fragment() {
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.expenseByCategory.collectLatest { categoryTotals ->
+            viewModel.expenseByCategoryFilter.collectLatest { categoryTotals ->
                 setupPieChart(categoryTotals)
             }
         }
+
         binding.buttonVerTransacoes.setOnClickListener {
             findNavController().navigate(R.id.action_dashboardFragment_to_transactionsListFragment)
+        }
+
+        binding.chipGroupFilter.setOnCheckedStateChangeListener { group, checkedIds ->
+            val checkedId = checkedIds.firstOrNull()
+            val filter = when (checkedId) {
+                R.id.chip_last_month -> DateFilter.LAST_MONTH
+                R.id.chip_all_time -> DateFilter.ALL_TIME
+                else -> DateFilter.THIS_MONTH
+            }
+            viewModel.setDateFilter(filter)
         }
     }
 
