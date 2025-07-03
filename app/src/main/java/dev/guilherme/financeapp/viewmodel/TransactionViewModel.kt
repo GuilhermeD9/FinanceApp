@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import dev.guilherme.financeapp.data.Category
 import dev.guilherme.financeapp.data.CategoryDao
+import dev.guilherme.financeapp.data.CategoryTotal
 import dev.guilherme.financeapp.data.Transaction
 import dev.guilherme.financeapp.data.TransactionDao
 import dev.guilherme.financeapp.data.TransactionWithCategory
@@ -27,6 +28,7 @@ class TransactionViewModel(
 ) : ViewModel() {
 
     val allTransactionsWithCategory: Flow<List<TransactionWithCategory>> = transactionDao.getAllTransactionsWithCategory()
+    val expenseByCategory: Flow<List<CategoryTotal>> = transactionDao.getExpenseTotalsByCategory()
     val dashboardState: StateFlow<DashboardState> =
         combine(transactionDao.getTotalReceitas(), transactionDao.getTotalDespesas()) { totalReceitas, totalDespesas ->
             val receitas = totalReceitas ?: 0.0

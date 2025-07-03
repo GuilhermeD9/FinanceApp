@@ -112,6 +112,16 @@
         </com.google.android.material.card.MaterialCardView>
     </LinearLayout>
 
+    <com.github.mikephil.charting.charts.PieChart
+        android:id="@+id/pie_chart"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="24dp"
+        app:layout_constraintTop_toBottomOf="@id/container_details"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/button_ver_transacoes" />
+
     <Button
         android:id="@+id/button_ver_transacoes"
         android:layout_width="0dp"

@@ -27,6 +27,15 @@ interface TransactionDao {
     ORDER BY transactions.date DESC""")
     fun getAllTransactionsWithCategory(): Flow<List<TransactionWithCategory>>
 
+    @Query("""
+        SELECT c.name AS categoryName, SUM(t.value) AS total
+        FROM transactions AS t
+        INNER JOIN categories AS c ON t.categoryId = c.id
+        WHERE t.type = 'DESPESA'
+        GROUP BY c.name
+        HAVING SUM(t.value) > 0""")
+    fun getExpenseTotalsByCategory(): Flow<List<CategoryTotal>>
+
     @Query("SELECT * FROM transactions WHERE id = :id")
     fun getTransactionById(id: Int): Flow<Transaction?>
 
