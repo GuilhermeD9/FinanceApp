@@ -112,6 +112,18 @@
         </com.google.android.material.card.MaterialCardView>
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/text_view_chart_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="Distribuição de Despesas"
+        android:textSize="20dp"
+        android:textAppearance="?attr/textAppearanceTitleMedium"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/container_details" />
+
     <com.github.mikephil.charting.charts.PieChart
         android:id="@+id/pie_chart"
         android:layout_width="0dp"

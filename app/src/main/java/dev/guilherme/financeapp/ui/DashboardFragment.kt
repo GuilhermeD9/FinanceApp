@@ -96,7 +96,7 @@ class DashboardFragment : Fragment() {
         binding.pieChart.apply {
             this.data = pieData
             setUsePercentValues(true)
-            description.text = "Distribuição de Despesas"
+            description.isEnabled = false
             isDrawHoleEnabled = true
             holeRadius = 58f
             transparentCircleRadius = 61f
