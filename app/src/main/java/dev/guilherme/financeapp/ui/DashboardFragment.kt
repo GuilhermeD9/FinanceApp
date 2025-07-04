@@ -113,6 +113,7 @@ class DashboardFragment : Fragment() {
             holeRadius = 58f
             transparentCircleRadius = 61f
             legend.isEnabled = false
+            setHoleColor(Color.DKGRAY)
             animateY(1200)
             invalidate()
         }
