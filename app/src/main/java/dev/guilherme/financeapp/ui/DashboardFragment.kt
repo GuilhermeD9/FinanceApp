@@ -14,24 +14,21 @@ import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.formatter.PercentFormatter
-import dev.guilherme.financeapp.FinanceApplication
+import dagger.hilt.android.AndroidEntryPoint
 import dev.guilherme.financeapp.R
 import dev.guilherme.financeapp.data.CategoryTotal
 import dev.guilherme.financeapp.databinding.FragmentDashboardBinding
 import dev.guilherme.financeapp.viewmodel.DateFilter
 import dev.guilherme.financeapp.viewmodel.TransactionViewModel
-import dev.guilherme.financeapp.viewmodel.TransactionViewModelFactory
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.text.NumberFormat
 import java.util.Locale
 
+@AndroidEntryPoint
 class DashboardFragment : Fragment() {
 
-    private val viewModel: TransactionViewModel by activityViewModels {
-        val database = (requireActivity().application as FinanceApplication).database
-        TransactionViewModelFactory(database.transactionDao(), database.categoryDao())
-    }
+    private val viewModel: TransactionViewModel by activityViewModels()
     private var _binding: FragmentDashboardBinding? = null
     private val binding get() = _binding!!
 

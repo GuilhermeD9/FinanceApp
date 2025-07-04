@@ -1,8 +1,7 @@
 package dev.guilherme.financeapp
 
 import android.app.Application
-import dev.guilherme.financeapp.data.AppDatabase
+import dagger.hilt.android.HiltAndroidApp
 
-class FinanceApplication : Application() {
-    val database: AppDatabase by lazy { AppDatabase.getDatabase(this) }
-}
+@HiltAndroidApp
+class FinanceApplication : Application()

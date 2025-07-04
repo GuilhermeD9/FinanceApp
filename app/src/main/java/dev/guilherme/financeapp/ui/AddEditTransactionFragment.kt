@@ -12,25 +12,22 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import dev.guilherme.financeapp.FinanceApplication
+import dagger.hilt.android.AndroidEntryPoint
 import dev.guilherme.financeapp.R
 import dev.guilherme.financeapp.data.Category
 import dev.guilherme.financeapp.data.Transaction
 import dev.guilherme.financeapp.databinding.FragmentAddEditTransactionBinding
 import dev.guilherme.financeapp.viewmodel.TransactionViewModel
-import dev.guilherme.financeapp.viewmodel.TransactionViewModelFactory
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 
+@AndroidEntryPoint
 class AddEditTransactionFragment : Fragment() {
 
-    private val viewModel: TransactionViewModel by activityViewModels {
-        val database = (requireActivity().application as FinanceApplication).database
-        TransactionViewModelFactory(database.transactionDao(), database.categoryDao())
-    }
+    private val viewModel: TransactionViewModel by activityViewModels()
 
     private val args: AddEditTransactionFragmentArgs by navArgs()
     private var _binding: FragmentAddEditTransactionBinding? = null

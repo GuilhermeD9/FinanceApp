@@ -10,18 +10,15 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import dev.guilherme.financeapp.FinanceApplication
-import dev.guilherme.financeapp.viewmodel.TransactionViewModel
-import dev.guilherme.financeapp.viewmodel.TransactionViewModelFactory
+import dagger.hilt.android.AndroidEntryPoint
 import dev.guilherme.financeapp.databinding.FragmentTransactionsListBinding
+import dev.guilherme.financeapp.viewmodel.TransactionViewModel
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class TransactionsListFragment : Fragment() {
 
-    private val viewModel: TransactionViewModel by activityViewModels {
-        val database = (requireActivity().application as FinanceApplication).database
-        TransactionViewModelFactory(database.transactionDao(), database.categoryDao())
-    }
+    private val viewModel: TransactionViewModel by activityViewModels()
 
     private var _binding: FragmentTransactionsListBinding? = null
     private val binding get() = _binding!!

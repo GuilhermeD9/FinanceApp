@@ -2,15 +2,14 @@ package dev.guilherme.financeapp.viewmodel
 
 import android.icu.util.Calendar
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.guilherme.financeapp.data.Category
 import dev.guilherme.financeapp.data.CategoryDao
 import dev.guilherme.financeapp.data.CategoryTotal
 import dev.guilherme.financeapp.data.Transaction
 import dev.guilherme.financeapp.data.TransactionDao
 import dev.guilherme.financeapp.data.TransactionWithCategory
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -19,13 +18,14 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 enum class DateFilter {
     THIS_MONTH, LAST_MONTH, ALL_TIME
 }
 
-@OptIn(ExperimentalCoroutinesApi::class)
-class TransactionViewModel(
+@HiltViewModel
+class TransactionViewModel @Inject constructor(
     private val transactionDao: TransactionDao,
     private val categoryDao: CategoryDao
 ) : ViewModel() {
@@ -109,16 +109,3 @@ data class DashboardState(
     val totalDespesas: Double = 0.0,
     val saldo: Double = 0.0
 )
-
-class TransactionViewModelFactory(
-    private val transactionDao: TransactionDao,
-    private val categoryDao: CategoryDao
-) : ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(TransactionViewModel::class.java)) {
-            @Suppress("UNCHECKED_CAST")
-            return TransactionViewModel(transactionDao, categoryDao) as T
-        }
-        throw IllegalArgumentException("Unknow ViewModel Class")
-    }
-}
