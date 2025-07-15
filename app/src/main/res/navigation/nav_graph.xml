@@ -23,6 +23,9 @@
             android:name="transactionId"
             app:argType="integer"
             android:defaultValue="-1" />
+        <action
+            android:id="@+id/action_addEditTransactionFragment_to_categoryListFragment"
+            app:destination="@id/categoryListFragment" />
     </fragment>
     <fragment
         android:id="@+id/dashboardFragment"
@@ -32,9 +35,6 @@
         <action
             android:id="@+id/action_dashboardFragment_to_transactionsListFragment"
             app:destination="@id/transactionsListFragment" />
-        <action
-            android:id="@+id/action_dashboardFragment_to_categoryListFragment"
-            app:destination="@id/categoryListFragment" />
     </fragment>
     <fragment
         android:id="@+id/categoryListFragment"

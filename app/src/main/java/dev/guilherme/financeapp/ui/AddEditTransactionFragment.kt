@@ -75,6 +75,11 @@ class AddEditTransactionFragment : Fragment() {
         binding.buttonSave.setOnClickListener {
             saveTransaction()
         }
+
+        binding.buttonManageCategoriesShortcut.setOnClickListener {
+            val action = AddEditTransactionFragmentDirections.actionAddEditTransactionFragmentToCategoryListFragment()
+            findNavController().navigate(action)
+        }
     }
 
     private fun checkEditModeAndPreselectCategory() {

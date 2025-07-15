@@ -64,10 +64,6 @@ class DashboardFragment : Fragment() {
             findNavController().navigate(R.id.action_dashboardFragment_to_transactionsListFragment)
         }
 
-        binding.buttonManageCategories.setOnClickListener {
-            findNavController().navigate(R.id.action_dashboardFragment_to_categoryListFragment)
-        }
-
         binding.chipGroupFilter.setOnCheckedStateChangeListener { group, checkedIds ->
             val checkedId = checkedIds.firstOrNull()
             val filter = when (checkedId) {
