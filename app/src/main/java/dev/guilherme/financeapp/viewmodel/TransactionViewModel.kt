@@ -102,6 +102,18 @@ class TransactionViewModel @Inject constructor(
     fun getTransactionById(id: Int): Flow<Transaction?> {
         return transactionDao.getTransactionById(id)
     }
+
+    fun insert(category: Category) = viewModelScope.launch {
+        categoryDao.insert(category)
+    }
+
+    fun update(category: Category) = viewModelScope.launch {
+        categoryDao.update(category)
+    }
+
+    fun delete(category: Category) = viewModelScope.launch {
+        categoryDao.delete(category)
+    }
 }
 
 data class DashboardState(
