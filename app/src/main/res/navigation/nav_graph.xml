@@ -32,5 +32,13 @@
         <action
             android:id="@+id/action_dashboardFragment_to_transactionsListFragment"
             app:destination="@id/transactionsListFragment" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_categoryListFragment"
+            app:destination="@id/categoryListFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/categoryListFragment"
+        android:name="dev.guilherme.financeapp.ui.CategoryListFragment"
+        android:label="fragment_category_list"
+        tools:layout="@layout/fragment_category_list" />
 </navigation>
