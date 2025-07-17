@@ -35,7 +35,7 @@ class CategoryAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.category_item, parent, false)
-        return CategoryViewHolder(view, onEditClick, onEditClick)
+        return CategoryViewHolder(view, onEditClick, onDeleteClick)
     }
 
     override fun onBindViewHolder(holder: CategoryViewHolder, position: Int) {
