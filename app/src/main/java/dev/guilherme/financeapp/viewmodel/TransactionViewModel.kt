@@ -10,6 +10,7 @@ import dev.guilherme.financeapp.data.CategoryTotal
 import dev.guilherme.financeapp.data.Transaction
 import dev.guilherme.financeapp.data.TransactionDao
 import dev.guilherme.financeapp.data.TransactionWithCategory
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -24,6 +25,7 @@ enum class DateFilter {
     THIS_MONTH, LAST_MONTH, ALL_TIME
 }
 
+@OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
 class TransactionViewModel @Inject constructor(
     private val transactionDao: TransactionDao,
@@ -31,14 +33,9 @@ class TransactionViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _dateFilter = MutableStateFlow(DateFilter.THIS_MONTH)
-    val dateFilter: StateFlow<DateFilter> = _dateFilter
+    private val _typeFilter = MutableStateFlow("ALL")
 
-    private val transactionsByFilter: Flow<List<TransactionWithCategory>> = _dateFilter.flatMapLatest { filter ->
-        val (start, end) = getDateRange(filter)
-        transactionDao.getAllTransactionsWithCategoryByDate(start, end)
-    }
-
-    private val dashboardStateByFilter: StateFlow<DashboardState> = _dateFilter.flatMapLatest { filter ->
+    val dashboardState: StateFlow<DashboardState> = _dateFilter.flatMapLatest { filter ->
         val (start, end) = getDateRange(filter)
         combine(
             transactionDao.getTotalReceitasByDate(start, end),
@@ -50,17 +47,27 @@ class TransactionViewModel @Inject constructor(
         }
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), DashboardState())
 
-    val expenseByCategoryFilter: Flow<List<CategoryTotal>> = _dateFilter.flatMapLatest { filter ->
+    val expenseByCategory: Flow<List<CategoryTotal>> = _dateFilter.flatMapLatest { filter ->
         val (start, end) = getDateRange(filter)
         transactionDao.getExpenseTotalsByCategoryByDate(start, end)
     }
 
-    val allTransactionsWithCategory: Flow<List<TransactionWithCategory>> = transactionsByFilter
-    val dashboardState: StateFlow<DashboardState> = dashboardStateByFilter
+    val allTransactionsWithCategory: Flow<List<TransactionWithCategory>> =
+        combine(_dateFilter, _typeFilter) { dateFilter, typeFilter ->
+            dateFilter to typeFilter
+        }.flatMapLatest { (dateFilter, typeFilter) ->
+            val (start, end) = getDateRange(dateFilter)
+            transactionDao.getAllTransactionsWithCategoryByDate(start, end, typeFilter)
+        }
+
     val allCategories: Flow<List<Category>> = categoryDao.getAllCategories()
 
     fun setDateFilter(filter: DateFilter) {
         _dateFilter.value = filter
+    }
+
+    fun setTypeFilter(filterType: String) {
+        _typeFilter.value = filterType
     }
 
     private fun getDateRange(filter: DateFilter): Pair<Long, Long> {
@@ -87,33 +94,27 @@ class TransactionViewModel @Inject constructor(
         }
     }
 
-    fun insert(transaction: Transaction) = viewModelScope.launch {
-        transactionDao.insert(transaction)
+    private fun setCalendarToStartOfDay(calendar: Calendar) {
+        calendar.set(Calendar.HOUR_OF_DAY, 0)
+        calendar.set(Calendar.MINUTE, 0)
+        calendar.set(Calendar.SECOND, 0)
+        calendar.set(Calendar.MILLISECOND, 0)
     }
 
-    fun delete(transaction: Transaction) = viewModelScope.launch {
-        transactionDao.delete(transaction)
+    private fun setCalendarToEndOfDay(calendar: Calendar) {
+        calendar.set(Calendar.HOUR_OF_DAY, 23)
+        calendar.set(Calendar.MINUTE, 59)
+        calendar.set(Calendar.SECOND, 59)
+        calendar.set(Calendar.MILLISECOND, 999)
     }
 
-    fun update(transaction: Transaction) = viewModelScope.launch {
-        transactionDao.update(transaction)
-    }
-
-    fun getTransactionById(id: Int): Flow<Transaction?> {
-        return transactionDao.getTransactionById(id)
-    }
-
-    fun insert(category: Category) = viewModelScope.launch {
-        categoryDao.insert(category)
-    }
-
-    fun update(category: Category) = viewModelScope.launch {
-        categoryDao.update(category)
-    }
-
-    fun delete(category: Category) = viewModelScope.launch {
-        categoryDao.delete(category)
-    }
+    fun insert(transaction: Transaction) = viewModelScope.launch { transactionDao.insert(transaction) }
+    fun delete(transaction: Transaction) = viewModelScope.launch { transactionDao.delete(transaction) }
+    fun update(transaction: Transaction) = viewModelScope.launch { transactionDao.update(transaction) }
+    fun getTransactionById(id: Int): Flow<Transaction?> { return transactionDao.getTransactionById(id) }
+    fun insert(category: Category) = viewModelScope.launch { categoryDao.insert(category) }
+    fun update(category: Category) = viewModelScope.launch { categoryDao.update(category) }
+    fun delete(category: Category) = viewModelScope.launch { categoryDao.delete(category) }
 }
 
 data class DashboardState(

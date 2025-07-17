@@ -13,6 +13,10 @@
         <action
             android:id="@+id/action_transactionsListFragment_to_addEditTransactionFragment"
             app:destination="@id/addEditTransactionFragment" />
+        <argument
+            android:name="filterType"
+            app:argType="string"
+            android:defaultValue="ALL" />
     </fragment>
     <fragment
         android:id="@+id/addEditTransactionFragment"

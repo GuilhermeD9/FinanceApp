@@ -55,13 +55,9 @@ class DashboardFragment : Fragment() {
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.expenseByCategoryFilter.collectLatest { categoryTotals ->
+            viewModel.expenseByCategory.collectLatest { categoryTotals ->
                 setupPieChart(categoryTotals)
             }
-        }
-
-        binding.buttonVerTransacoes.setOnClickListener {
-            findNavController().navigate(R.id.action_dashboardFragment_to_transactionsListFragment)
         }
 
         binding.chipGroupFilter.setOnCheckedStateChangeListener { group, checkedIds ->
@@ -72,6 +68,21 @@ class DashboardFragment : Fragment() {
                 else -> DateFilter.THIS_MONTH
             }
             viewModel.setDateFilter(filter)
+        }
+
+        binding.cardDespesas.setOnClickListener {
+            val action = DashboardFragmentDirections.actionDashboardFragmentToTransactionsListFragment("RECEITA")
+            findNavController().navigate(action)
+        }
+
+        binding.cardDespesas.setOnClickListener {
+            val action = DashboardFragmentDirections.actionDashboardFragmentToTransactionsListFragment("DESPESAS")
+            findNavController().navigate(action)
+        }
+
+        binding.buttonVerTransacoes.setOnClickListener {
+            val action = DashboardFragmentDirections.actionDashboardFragmentToTransactionsListFragment()
+            findNavController().navigate(action)
         }
     }
 

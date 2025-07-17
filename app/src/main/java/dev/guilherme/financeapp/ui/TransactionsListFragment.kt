@@ -9,16 +9,19 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import dev.guilherme.financeapp.databinding.FragmentTransactionsListBinding
 import dev.guilherme.financeapp.viewmodel.TransactionViewModel
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class TransactionsListFragment : Fragment() {
 
     private val viewModel: TransactionViewModel by activityViewModels()
+    private val args: TransactionsListFragmentArgs by navArgs()
 
     private var _binding: FragmentTransactionsListBinding? = null
     private val binding get() = _binding!!
@@ -34,6 +37,8 @@ class TransactionsListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        viewModel.setTypeFilter(args.filterType)
 
         val adapter = TransactionAdapter(
             onItemClick = { transaction ->
@@ -51,7 +56,7 @@ class TransactionsListFragment : Fragment() {
         binding.recyclerViewTransactions.layoutManager = LinearLayoutManager(context)
 
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.allTransactionsWithCategory.collect { transactions ->
+            viewModel.allTransactionsWithCategory.collectLatest { transactions ->
                 adapter.submitList(transactions)
             }
         }
@@ -65,6 +70,7 @@ class TransactionsListFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        viewModel.setTypeFilter("ALL")
         _binding = null
     }
 }
