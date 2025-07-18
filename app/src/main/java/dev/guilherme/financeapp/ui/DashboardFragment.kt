@@ -60,7 +60,7 @@ class DashboardFragment : Fragment() {
             }
         }
 
-        binding.chipGroupFilter.setOnCheckedStateChangeListener { group, checkedIds ->
+        binding.chipGroupFilter.setOnCheckedStateChangeListener { _, checkedIds ->
             val checkedId = checkedIds.firstOrNull()
             val filter = when (checkedId) {
                 R.id.chip_last_month -> DateFilter.LAST_MONTH
@@ -70,13 +70,13 @@ class DashboardFragment : Fragment() {
             viewModel.setDateFilter(filter)
         }
 
-        binding.cardDespesas.setOnClickListener {
+        binding.cardReceitas.setOnClickListener {
             val action = DashboardFragmentDirections.actionDashboardFragmentToTransactionsListFragment("RECEITA")
             findNavController().navigate(action)
         }
 
         binding.cardDespesas.setOnClickListener {
-            val action = DashboardFragmentDirections.actionDashboardFragmentToTransactionsListFragment("DESPESAS")
+            val action = DashboardFragmentDirections.actionDashboardFragmentToTransactionsListFragment("DESPESA")
             findNavController().navigate(action)
         }
 
