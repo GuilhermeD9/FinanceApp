@@ -6,4 +6,5 @@
     <color name="red">#F44336</color>
     <color name="purple_200">#E5D5F6</color>
     <color name="teal_700">#179898</color>
+    <color name="baseGreen">#8CC084</color>
 </resources>
