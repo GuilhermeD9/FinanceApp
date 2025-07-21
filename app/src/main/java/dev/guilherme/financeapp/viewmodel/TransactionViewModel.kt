@@ -35,6 +35,8 @@ class TransactionViewModel @Inject constructor(
     private val _dateFilter = MutableStateFlow(DateFilter.THIS_MONTH)
     private val _typeFilter = MutableStateFlow("ALL")
 
+    val dateFilter: StateFlow<DateFilter> = _dateFilter
+
     val dashboardState: StateFlow<DashboardState> = _dateFilter.flatMapLatest { filter ->
         val (start, end) = getDateRange(filter)
         combine(
@@ -75,17 +77,19 @@ class TransactionViewModel @Inject constructor(
         return when (filter) {
             DateFilter.THIS_MONTH -> {
                 calendar.set(Calendar.DAY_OF_MONTH, 1)
+                setCalendarToStartOfDay(calendar)
                 val start = calendar.timeInMillis
-                calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH))
-                val end = calendar.timeInMillis
+                calendar.add(Calendar.MONTH, 1)
+                val end = calendar.timeInMillis - 1
                 start to end
             }
             DateFilter.LAST_MONTH -> {
                 calendar.add(Calendar.MONTH, -1)
                 calendar.set(Calendar.DAY_OF_MONTH, 1)
+                setCalendarToStartOfDay(calendar)
                 val start = calendar.timeInMillis
-                calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH))
-                val end = calendar.timeInMillis
+                calendar.add(Calendar.MONTH, 1)
+                val end = calendar.timeInMillis - 1
                 start to end
             }
             DateFilter.ALL_TIME -> {

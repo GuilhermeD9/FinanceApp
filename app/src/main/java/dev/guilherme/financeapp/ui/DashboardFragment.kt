@@ -45,6 +45,29 @@ class DashboardFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.dateFilter.collectLatest { filter ->
+                val chipId = when (filter) {
+                    DateFilter.THIS_MONTH -> R.id.chip_this_month
+                    DateFilter.LAST_MONTH -> R.id.chip_last_month
+                    DateFilter.ALL_TIME -> R.id.chip_all_time
+                }
+                if (binding.chipGroupFilter.checkedChipId != chipId) {
+                    binding.chipGroupFilter.check(chipId)
+                }
+            }
+        }
+
+        binding.chipGroupFilter.setOnCheckedStateChangeListener { _, checkedIds ->
+            val checkedId = checkedIds.firstOrNull()
+            val filter = when (checkedId) {
+                R.id.chip_last_month -> DateFilter.LAST_MONTH
+                R.id.chip_all_time -> DateFilter.ALL_TIME
+                else -> DateFilter.THIS_MONTH
+            }
+            viewModel.setDateFilter(filter)
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
             viewModel.dashboardState.collectLatest { state ->
                 val formatadorMoeda = NumberFormat.getCurrencyInstance(Locale("pt", "BR"))
 
@@ -58,16 +81,6 @@ class DashboardFragment : Fragment() {
             viewModel.expenseByCategory.collectLatest { categoryTotals ->
                 setupPieChart(categoryTotals)
             }
-        }
-
-        binding.chipGroupFilter.setOnCheckedStateChangeListener { _, checkedIds ->
-            val checkedId = checkedIds.firstOrNull()
-            val filter = when (checkedId) {
-                R.id.chip_last_month -> DateFilter.LAST_MONTH
-                R.id.chip_all_time -> DateFilter.ALL_TIME
-                else -> DateFilter.THIS_MONTH
-            }
-            viewModel.setDateFilter(filter)
         }
 
         binding.cardReceitas.setOnClickListener {
