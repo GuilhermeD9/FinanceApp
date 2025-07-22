@@ -34,6 +34,7 @@ class TransactionViewModel @Inject constructor(
 
     private val _dateFilter = MutableStateFlow(DateFilter.THIS_MONTH)
     private val _typeFilter = MutableStateFlow("ALL")
+    private val _searchQuery = MutableStateFlow("")
 
     val dateFilter: StateFlow<DateFilter> = _dateFilter
 
@@ -55,11 +56,11 @@ class TransactionViewModel @Inject constructor(
     }
 
     val allTransactionsWithCategory: Flow<List<TransactionWithCategory>> =
-        combine(_dateFilter, _typeFilter) { dateFilter, typeFilter ->
-            dateFilter to typeFilter
-        }.flatMapLatest { (dateFilter, typeFilter) ->
+        combine(_dateFilter, _typeFilter, _searchQuery) { dateFilter, typeFilter, searchQuery ->
+            Triple(dateFilter, typeFilter, searchQuery)
+        }.flatMapLatest { (dateFilter, typeFilter, searchQuery) ->
             val (start, end) = getDateRange(dateFilter)
-            transactionDao.getAllTransactionsWithCategoryByDate(start, end, typeFilter)
+            transactionDao.getAllTransactionsWithCategoryByDate(start, end, typeFilter, searchQuery)
         }
 
     val allCategories: Flow<List<Category>> = categoryDao.getAllCategories()
@@ -70,6 +71,10 @@ class TransactionViewModel @Inject constructor(
 
     fun setTypeFilter(filterType: String) {
         _typeFilter.value = filterType
+    }
+
+    fun setSearchQuery(query: String) {
+        _searchQuery.value = query
     }
 
     private fun getDateRange(filter: DateFilter): Pair<Long, Long> {

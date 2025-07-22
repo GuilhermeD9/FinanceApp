@@ -27,8 +27,9 @@ interface TransactionDao {
     INNER JOIN categories ON transactions.categoryId = categories.id 
     WHERE (transactions.date BETWEEN :startDate AND :endDate)
     AND (:filterType = 'ALL' OR transactions.type = :filterType)
+    AND (transactions.description LIKE '%' || :searchQuery || '%')
     ORDER BY transactions.date DESC""")
-    fun getAllTransactionsWithCategoryByDate(startDate: Long, endDate: Long, filterType: String): Flow<List<TransactionWithCategory>>
+    fun getAllTransactionsWithCategoryByDate(startDate: Long, endDate: Long, filterType: String, searchQuery: String): Flow<List<TransactionWithCategory>>
 
     @Query("""
         SELECT c.name AS categoryName, SUM(t.value) AS total

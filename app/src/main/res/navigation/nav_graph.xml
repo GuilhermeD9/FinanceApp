@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/transactionsListFragment"
         android:name="dev.guilherme.financeapp.ui.TransactionsListFragment"
-        android:label="fragment_transactions_list"
+        android:label="@string/title_transactions_list"
         tools:layout="@layout/fragment_transactions_list" >
         <action
             android:id="@+id/action_transactionsListFragment_to_addEditTransactionFragment"
@@ -21,7 +21,7 @@
     <fragment
         android:id="@+id/addEditTransactionFragment"
         android:name="dev.guilherme.financeapp.ui.AddEditTransactionFragment"
-        android:label="fragment_add_edit_transaction"
+        android:label="@string/title_edit_transaction"
         tools:layout="@layout/fragment_add_edit_transaction" >
         <argument
             android:name="transactionId"
@@ -34,7 +34,7 @@
     <fragment
         android:id="@+id/dashboardFragment"
         android:name="dev.guilherme.financeapp.ui.DashboardFragment"
-        android:label="fragment_dashboard"
+        android:label="@string/title_dashboard"
         tools:layout="@layout/fragment_dashboard" >
         <action
             android:id="@+id/action_dashboardFragment_to_transactionsListFragment"
@@ -43,6 +43,6 @@
     <fragment
         android:id="@+id/categoryListFragment"
         android:name="dev.guilherme.financeapp.ui.CategoryListFragment"
-        android:label="fragment_category_list"
+        android:label="@string/title_manage_categories"
         tools:layout="@layout/fragment_category_list" />
 </navigation>

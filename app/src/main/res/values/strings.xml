@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">FinanceApp</string>
+
+    <string name="title_dashboard">Meu Dashboard</string>
+    <string name="title_transactions_list">Todas as Transações</string>
+    <string name="title_add_transaction">Nova Transação</string>
+    <string name="title_edit_transaction">Editar Transação</string>
+    <string name="title_manage_categories">Gerenciar Categorias</string>
 </resources>
