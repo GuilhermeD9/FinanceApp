@@ -3,7 +3,10 @@
 **FinanceApp** é um aplicativo Android nativo, desenvolvido em Kotlin, para o gerenciamento de finanças pessoais. Ele permite ao usuário registrar, visualizar, editar e deletar suas receitas e despesas, organizá-las por categoria e visualizar um resumo financeiro através de um dashboard com gráficos.
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/c01aa425-171d-4e11-940d-0e9948e597f3" width="250">
+  <img src="https://github.com/user-attachments/assets/c01aa425-171d-4e11-940d-0e9948e597f3" width="200">
+  <img src="https://github.com/user-attachments/assets/e7900b6b-038b-441a-85ce-b9bb6ea4304e" width="200">
+  <img src="https://github.com/user-attachments/assets/47c8cf2d-100d-4077-93d3-180579af7375" width="200">
+  <img src="https://github.com/user-attachments/assets/844dbca6-fc79-4c41-b25e-930a70f15cec" width="200">
 </p>
 
 ---
